@@ -14,7 +14,7 @@ class Stock(SecurityInterface):
         :type sec_target: String
         :return:
         """
-        super().__init__(sec_target)
+        SecurityInterface.__init__(self, sec_target)
 
     def analyze(self):
         """
@@ -33,9 +33,16 @@ class Stock(SecurityInterface):
         year_low = info['year_low']
 
         # Spit some basic info to console
-        print("Basic Stock Info\n")
-        print("\tCompany: " + company)
-        print("\tCurrent Price: " + curr)
-        print("\tYear High: " + year_high)
-        print("\tYear Low: " + year_low)
+        #print("Basic Stock Info\n")
+        #print("\tCompany: " + company)
+        #print("\tCurrent Price: " + curr)
+        #print("\tYear High: " + year_high)
+        #print("\tYear Low: " + year_low)
 
+        info = "Basic Stock Info\n\n"
+        info += "Company: " + company + "\n"
+        info += "Current Price: " + curr + "\n"
+        info += "Year High: " + year_high + "\n"
+        info += "Year Low: " + year_low + "\n"
+
+        return info

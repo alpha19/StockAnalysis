@@ -13,7 +13,7 @@ class Bond(SecurityInterface):
         :type sec_target: String
         :return:
         """
-        super().__init__(sec_target)
+        SecurityInterface.__init__(self, sec_target)
 
     def analyze(self):
         """

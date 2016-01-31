@@ -32,6 +32,6 @@ class SecurityAnalysis(object):
         """
 
         """
-        self.__secureObj.analyze()
+        return self.__secureObj.analyze()
 
 
