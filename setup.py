@@ -4,4 +4,4 @@ import py2exe, sys, os
 
 sys.argv.append('py2exe')
 
-setup(windows = ["__main__.py"])
+setup(windows = ["gui_main.py"])

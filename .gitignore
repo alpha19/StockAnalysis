@@ -1,6 +1,12 @@
 *.pyc
 *.pyo
 
+build/
+-.spec
+.idea/
+gui_main.spec
+__main__.spec
+
 .installed.cfg
 bin
 develop-eggs

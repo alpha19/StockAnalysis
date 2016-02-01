@@ -16,7 +16,7 @@ class SecurityInterface(object):
         :param secTarget:
         :return:
         """
-        self._target = secTarget
+        self.target = secTarget
 
     @abstractmethod
     def analyze(self):
@@ -24,4 +24,16 @@ class SecurityInterface(object):
         All subclasses must run some type of analysis
         :return:
         """
+        pass
+
+    @abstractmethod
+    def getInfo(self):
+        """
+        Return formatted info about security (to be printed to console)
+        :return:
+        """
+        pass
+
+    @abstractmethod
+    def storeInfo(self):
         pass

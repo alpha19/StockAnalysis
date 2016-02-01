@@ -34,7 +34,10 @@ class SecureGui(Tkinter.Tk):
         # Get the stock info
         if stock is not "" or "Enter Ticker Symbol":
             # TODO: Just focusing on stocks right now
-            analysisObj = SecurityAnalysis(stock)
-            info = analysisObj.runAnalysis()
+            analysisObj = SecurityAnalysis()
+
+            securitiesObj = analysisObj.securityFactory(stock)
+            securitiesObj.analyze()
+            info = securitiesObj.getInfo()
 
             self.labelVariable.set(info)

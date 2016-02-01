@@ -1,21 +1,23 @@
-import sys
-from optparse import OptionParser
-from analysis.security_analysis import SecurityAnalysis
+# import sys
+# from optparse import OptionParser
+# TODO: ALOT OF THIS STUFF MAY BE OBSOLETE (command line stuffs)
 from gui.gui import SecureGui
 
 __author__ = 'kdedow'
 
-def main(security = ""):
-    if security is not "":
-        # TODO: Just focusing on stocks right now
-        analysisObj = SecurityAnalysis(security)
-        analysisObj.runAnalysis()
+def main():
+    #if security is not "":
+    #    # TODO: Just focusing on stocks right now
+    #    analysisObj = SecurityAnalysis(security)
+    #    analysisObj.runAnalysis()
 
-
-if __name__ == "__main__":
     app = SecureGui()
     app.title('Basic Stock Info')
     app.mainloop()
+
+
+if __name__ == "__main__":
+    main()
 
     """
     NOTE: The command line part has been commented out for now
