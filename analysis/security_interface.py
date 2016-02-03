@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+import time
 
 __author__ = 'kdedow'
 
@@ -17,6 +18,9 @@ class SecurityInterface(object):
         :return:
         """
         self.target = secTarget
+
+        # Get the date
+        self.dateStr = time.strftime("%d/%m/%Y")
 
     @abstractmethod
     def analyze(self):
