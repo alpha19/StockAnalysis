@@ -29,7 +29,7 @@ class SecurityAnalysis(object):
             # Create a stock object to run analysis on
             return Stock(secTarget)
         elif secType is SecurityTypes.bond:
-            # Create a bond object to run analysis on
+            # Create a bond object to run analysis on. Also this isn't really a bond...
             return Bond(secTarget)
 
     def setupStockTable(self):

@@ -1,11 +1,11 @@
-import Tkinter
+import tkinter
 from analysis.security_analysis import SecurityAnalysis
 
 __author__ = 'kdedow'
 
-class SecureGui(Tkinter.Tk):
+class SecureGui(tkinter.Tk):
     def __init__(self, parent=None):
-        Tkinter.Tk.__init__(self, parent)
+        tkinter.Tk.__init__(self, parent)
 
         self.parent = parent
         self.initialize()
@@ -13,19 +13,19 @@ class SecureGui(Tkinter.Tk):
     def initialize(self):
         self.grid()
 
-        self.entryVariable = Tkinter.StringVar()
-        self.entry = Tkinter.Entry(self, textvariable=self.entryVariable)
+        self.entryVariable = tkinter.StringVar()
+        self.entry = tkinter.Entry(self, textvariable=self.entryVariable)
         self.entry.grid(column = 0, row = 0, sticky = 'EW')
         self.entryVariable.set(u"Enter Ticker Symbol")
 
-        buttonOne = Tkinter.Button(self,text = u"Analyze", command=self.onAnalyzeClick)
+        buttonOne = tkinter.Button(self,text = u"Analyze", command=self.onAnalyzeClick)
         buttonOne.grid(column = 1, row = 0)
 
-        buttonTwo = Tkinter.Button(self,text = u"Add Stock", command=self.onAddStockClick)
+        buttonTwo = tkinter.Button(self,text = u"Add Stock", command=self.onAddStockClick)
         buttonTwo.grid(column = 1, row = 1)
 
-        self.labelVariable = Tkinter.StringVar()
-        label = Tkinter.Label(self, textvariable=self.labelVariable, anchor = "w",fg = "black",bg = "white")
+        self.labelVariable = tkinter.StringVar()
+        label = tkinter.Label(self, textvariable=self.labelVariable, anchor = "w",fg = "black",bg = "white")
         label.grid(column=0,row=2,columnspan=2,sticky='EW')
 
         self.grid_columnconfigure(0, weight = 1)
