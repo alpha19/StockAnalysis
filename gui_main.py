@@ -1,6 +1,7 @@
 # import sys
 # from optparse import OptionParser
 # TODO: ALOT OF THIS STUFF MAY BE OBSOLETE (command line stuffs)
+# TODO: Error handling. Also logging would be smart!
 from gui.gui import SecureGui
 
 __author__ = 'kdedow'

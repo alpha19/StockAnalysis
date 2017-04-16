@@ -1,4 +1,5 @@
 import os
+import re
 import requests
 import sqlite3
 from analysis.security_interface import SecurityInterface
@@ -26,6 +27,7 @@ class Stock(SecurityInterface):
         self.daily_percent = 0
         self.daily_change = 0
 
+    # TODO: Change the name of this function. Should not be analyzing anything
     def analyze(self):
         """
         Analyze the given stock
@@ -33,17 +35,40 @@ class Stock(SecurityInterface):
         """
 
         # Setup the connection
-        resp = requests.get("http://finance.yahoo.com/webservice/v1/symbols/" + self.target + "/quote?format=json&view=detail")
+        desiredInfo = "nakjp2c1"
+        resp = requests.get("http://finance.yahoo.com/d/quotes.csv?s=" + self.target + "&f=" + desiredInfo)
 
-        # Get and parse the response
-        info = resp.json()['list']['resources'][0]['resource']['fields']
+        # Get and parse the response, location in csv remains constant based on format
+        # Only interested in the first line
+        line = resp.text.splitlines()[0]
+        if line is not None:
+            stockCols = line.split(",")
+            self.company = stockCols[0]
+            self.curr = float(stockCols[1])
+            self.year_high = float(stockCols[2])
+            self.year_low = float(stockCols[3])
 
-        self.company = info['name']
-        self.curr = float(info['price'])
-        self.year_high = float(info['year_high'])
-        self.year_low = float(info['year_low'])
-        self.daily_percent = float(info['chg_percent'])
-        self.daily_change = float(info['change'])
+            # Percent change requires additional analysis
+            percent = stockCols[4]
+            percentVal = float(1)
+            if percent.startswith("-"):
+                percentVal = -1
+
+            percent = re.sub('[-+%"]', '', percent)
+            percentVal *= float(percent)
+
+            self.daily_percent = percentVal
+
+            # Same with daily change
+            change = stockCols[5]
+            changeVal = float(1)
+            if(change.startswith("-")):
+                changeVal = -1
+
+            change = re.sub('[-+"]', '', change)
+            changeVal *= float(change)
+
+            self.daily_change = changeVal
 
     def getInfo(self):
         info = "Basic Stock Info\n\n"
@@ -88,17 +113,14 @@ class Stock(SecurityInterface):
 
         # First check prevents errors
         if currStreak is None:
-            currStreak = 0;
-        if change < 0:
-            if currStreak < 0:
-                currStreak -= 1
-            else:
-                currStreak = -1
-        elif change > 0:
-            if currStreak > 0:
-                currStreak += 1
-            else:
-                currStreak = 1
+            currStreak = 0
+
+        if change < 0 and currStreak < 0:
+            currStreak -= 1
+        elif change < 0 and currStreak >= 0:
+            currStreak = -1
+        elif change > 0 and currStreak > 0:
+            currStreak += 1
         else:
             currStreak = 1
 
