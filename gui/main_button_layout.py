@@ -16,4 +16,12 @@ class MainButtons(QWidget):
         self.initialize()
 
     def initialize(self):
+        # Now setup quit button
+        self.quitButton = QPushButton('Quit', self.mainWindow)
+        self.quitButton.clicked.connect(QCoreApplication.instance().quit)
+        self.quitButton.resize(qbtn.sizeHint())
+        self.quitButton.move(50, 50)
+
+        # Now the analysis buttonw
+        self.trackButton('Track')
 
