@@ -101,6 +101,11 @@ class SecurityAnalysis(object):
 
         conn.close()
 
+    def getTrackedStocks(self):
+        stocks = []
+
+        # open a connection and get all available stocks
+
 
 
 

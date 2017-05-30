@@ -11,7 +11,7 @@ def main():
     #    analysisObj = SecurityAnalysis(security)
     #    analysisObj.runAnalysis()
 
-    app = SecureGui()
+    app = SecureGui(sys.argv)
     sys.exit(app.exec_())
 
 if __name__ == "__main__":

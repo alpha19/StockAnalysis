@@ -125,3 +125,17 @@ class Stock(SecurityInterface):
             currStreak = 1
 
         conn.execute("UPDATE basic_info SET streak = ? WHERE ticker = ?", (currStreak, self.target))
+
+    def _initialize(self):
+        # open the connection
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        conn = sqlite3.connect(os.path.join(dir_path, '../stocks.db'))
+
+        self.company = conn.execute("SELECT company FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        self.curr = conn.execute("SELECT price FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        self.year_high = conn.execute("SELECT year_high FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        self.year_low = conn.execute("SELECT year_low FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        self.daily_percent = conn.execute("SELECT daily_percent FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        self.daily_change = conn.execute("SELECT daily_change FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+
+        conn.close()
