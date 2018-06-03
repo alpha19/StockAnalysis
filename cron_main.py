@@ -1,6 +1,5 @@
 #import sys
 from analysis.security_analysis import SecurityAnalysis
-from analysis.security_interface import SecurityInterface
 
 __author__ = 'kdedow'
 

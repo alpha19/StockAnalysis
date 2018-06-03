@@ -1,59 +1,65 @@
-import tkinter
-from analysis.security_analysis import SecurityAnalysis
+from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QFormLayout, QLineEdit
+from gui.stock_button import StockButton
+
+from PyQt5 import QtCore
 
 __author__ = 'kdedow'
 
-class SecureGui(tkinter.Tk):
-    def __init__(self, parent=None):
-        tkinter.Tk.__init__(self, parent)
+class SecureGui(QApplication):
+    def __init__(self, argList=[]):
+        super().__init__(argList)
 
-        self.parent = parent
+        self.mainWindow = None
+        self.stockWidget = None
+        self.buttonWidget = None
+
+        self.layout = None
+
         self.initialize()
 
     def initialize(self):
-        self.grid()
+        self.mainWindow = QWidget()
 
-        self.entryVariable = tkinter.StringVar()
-        self.entry = tkinter.Entry(self, textvariable=self.entryVariable)
-        self.entry.grid(column = 0, row = 0, sticky = 'EW')
-        self.entryVariable.set(u"Enter Ticker Symbol")
+        self.mainWindow.resize(500, 300)
+        self.mainWindow.move(300, 300)
+        self.mainWindow.setWindowTitle("Initial Stock Analysis Project")
 
-        buttonOne = tkinter.Button(self,text = u"Analyze", command=self.onAnalyzeClick)
-        buttonOne.grid(column = 1, row = 0)
+        # Set the layout
+        self.layout = QHBoxLayout()
+        self.mainWindow.setLayout(self.layout)
 
-        buttonTwo = tkinter.Button(self,text = u"Add Stock", command=self.onAddStockClick)
-        buttonTwo.grid(column = 1, row = 1)
+        self._setupButtonWidget()
 
-        self.labelVariable = tkinter.StringVar()
-        label = tkinter.Label(self, textvariable=self.labelVariable, anchor = "w",fg = "black",bg = "white")
-        label.grid(column=0,row=2,columnspan=2,sticky='EW')
-
-        self.grid_columnconfigure(0, weight = 1)
-        self.resizable(True, False)
+        self.mainWindow.show()
 
     def onAnalyzeClick(self):
-        stock = self.entryVariable.get()
-
-        # Get the stock info
-        if stock is not "" or "Enter Ticker Symbol":
-            # TODO: Just focusing on stocks right now
-            analysisObj = SecurityAnalysis()
-
-            securitiesObj = analysisObj.securityFactory(stock)
-            securitiesObj.analyze()
-            info = securitiesObj.getInfo()
-
-            self.labelVariable.set(info)
+        # TODO: There will eventually be analysis methods
+        pass
 
     def onAddStockClick(self):
-        stock = self.entryVariable.get()
+        pass
 
-        # Get the stock info
-        if stock is not "" or "Enter Ticker Symbol":
-            # TODO: Just focusing on stocks right now
-            analysisObj = SecurityAnalysis()
+    def _setupStockWidget(self):
+        self.stockWidget = QWidget()
 
-            securitiesObj = analysisObj.addStock(stock)
+        self.layout.addWidget(self.stockWidget)
 
-        # Not sure if this is robust enough yet
-        print("Successfully added " + stock + " to database")
+    def _setupButtonWidget(self):
+        # Setup the message box
+        self.buttonWidget = QWidget(self.mainWindow)
+
+        btnLayout = QFormLayout()
+        btnLayout.setFormAlignment(QtCore.Qt.AlignRight)
+        self.buttonWidget.setLayout(btnLayout)
+
+        # Add the input dialog
+        inputStock = QLineEdit("Enter Stock Symbol", self.buttonWidget)
+        # TODO: Functionality for when add stock button is clicked
+
+        # Setup the add stock button
+        addStock = StockButton("Add Stock", self.buttonWidget)
+        # TODO: Add a click action to add stock
+
+        btnLayout.addRow(inputStock, addStock)
+        self.layout.addWidget(self.buttonWidget)
+        self.buttonWidget.show()

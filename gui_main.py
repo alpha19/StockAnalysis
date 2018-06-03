@@ -1,5 +1,4 @@
-# import sys
-# from optparse import OptionParser
+import sys
 # TODO: ALOT OF THIS STUFF MAY BE OBSOLETE (command line stuffs)
 # TODO: Error handling. Also logging would be smart!
 from gui.gui import SecureGui
@@ -12,10 +11,8 @@ def main():
     #    analysisObj = SecurityAnalysis(security)
     #    analysisObj.runAnalysis()
 
-    app = SecureGui()
-    app.title('Basic Stock Info')
-    app.mainloop()
-
+    app = SecureGui(sys.argv)
+    sys.exit(app.exec_())
 
 if __name__ == "__main__":
     main()

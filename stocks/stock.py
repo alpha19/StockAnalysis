@@ -8,8 +8,10 @@ __author__ = 'kdedow'
 
 class Stock(SecurityInterface):
     """
-    This class represents a stock object
+    This class represents a stock object. Class members to store info about stock.
+    Main objective of this class is to make API calls to keep stock info currenty
     """
+    BASE_URL = "https://api.iextrading.com/1.0/stock/"
 
     def __init__(self, sec_target=""):
         """
@@ -34,9 +36,9 @@ class Stock(SecurityInterface):
         :return:
         """
 
-        # Setup the connection
-        desiredInfo = "nakjp2c1"
-        resp = requests.get("http://finance.yahoo.com/d/quotes.csv?s=" + self.target + "&f=" + desiredInfo)
+        # Setup the connections
+        dailyData = requests.get(Stock.BASE_URL + self.target + "/chart/1d")
+        companyData = requests.get(Stock.BASE_URL + self.target + "/company")
 
         # Get and parse the response, location in csv remains constant based on format
         # Only interested in the first line
@@ -125,3 +127,17 @@ class Stock(SecurityInterface):
             currStreak = 1
 
         conn.execute("UPDATE basic_info SET streak = ? WHERE ticker = ?", (currStreak, self.target))
+
+    def _initialize(self):
+        # open the connection
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        conn = sqlite3.connect(os.path.join(dir_path, '../stocks.db'))
+
+        self.company = conn.execute("SELECT company FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        self.curr = conn.execute("SELECT price FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        self.year_high = conn.execute("SELECT year_high FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        self.year_low = conn.execute("SELECT year_low FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        self.daily_percent = conn.execute("SELECT daily_percent FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        self.daily_change = conn.execute("SELECT daily_change FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+
+        conn.close()
