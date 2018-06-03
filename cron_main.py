@@ -1,4 +1,3 @@
-#import sys
 from analysis.security_analysis import SecurityAnalysis
 
 __author__ = 'kdedow'
