@@ -8,8 +8,10 @@ __author__ = 'kdedow'
 
 class Stock(SecurityInterface):
     """
-    This class represents a stock object
+    This class represents a stock object. Class members to store info about stock.
+    Main objective of this class is to make API calls to keep stock info currenty
     """
+    BASE_URL = "https://api.iextrading.com/1.0/stock/"
 
     def __init__(self, sec_target=""):
         """
@@ -34,9 +36,9 @@ class Stock(SecurityInterface):
         :return:
         """
 
-        # Setup the connection
-        desiredInfo = "nakjp2c1"
-        resp = requests.get("http://finance.yahoo.com/d/quotes.csv?s=" + self.target + "&f=" + desiredInfo)
+        # Setup the connections
+        dailyData = requests.get(Stock.BASE_URL + self.target + "/chart/1d")
+        companyData = requests.get(Stock.BASE_URL + self.target + "/company")
 
         # Get and parse the response, location in csv remains constant based on format
         # Only interested in the first line

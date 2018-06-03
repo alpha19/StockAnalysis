@@ -19,9 +19,9 @@ class SecurityAnalysis(object):
         """
         pass
 
-    def securityFactory(self, secTarget, secType=SecurityTypes.stock):
+    def Get(self, secTarget, secType=SecurityTypes.stock):
         """
-        Creates a security object (e.g. stock bond
+        Creates a security object (e.g. stock bond)
 
         :return:
         """
@@ -29,8 +29,11 @@ class SecurityAnalysis(object):
             # Create a stock object to run analysis on
             return Stock(secTarget)
         elif secType is SecurityTypes.bond:
-            # Create a bond object to run analysis on. Also this isn't really a security...
+            # Create a bond object to run analysis on.
             return Bond(secTarget)
+        else:
+            # This shouldn't happen but return None if we can't find an appropriate security
+            return None
 
     def setupStockTable(self):
         """
@@ -62,12 +65,12 @@ class SecurityAnalysis(object):
         conn.commit()
         conn.close()
 
-    def addStock(self, ticker = ""):
+    def addStock(self, ticker=""):
         # Get the date
         dateStr = time.strftime("%d/%m/%Y")
 
         # Get the stock and analyze
-        stockObj = self.securityFactory(ticker)
+        stockObj = self.Get(ticker)
         stockObj.analyze()
 
         # open the connection
@@ -76,9 +79,9 @@ class SecurityAnalysis(object):
 
         # Store the stock in the db
         conn.execute("INSERT INTO basic_info (ticker, price, daily_change, company, year_high, year_low, \
-             daily_percent, date, streak) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (stockObj.target, stockObj.curr, \
-                                                                                stockObj.daily_change, stockObj.company,\
-                                                                                stockObj.year_high, stockObj.year_low,\
+             daily_percent, date, streak) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (stockObj.target, stockObj.curr,
+                                                                                stockObj.daily_change, stockObj.company,
+                                                                                stockObj.year_high, stockObj.year_low,
                                                                                 stockObj.daily_percent, dateStr, 0))
         # Close the connection
         conn.commit()
@@ -96,7 +99,7 @@ class SecurityAnalysis(object):
         tickers = conn.execute("SELECT ticker FROM basic_info").fetchall()
 
         for stock in tickers:
-            stockObj = self.securityFactory(stock[0])
+            stockObj = self.Get(stock[0])
             stockObj.storeInfo()
 
         conn.close()
