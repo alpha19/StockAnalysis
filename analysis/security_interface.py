@@ -18,7 +18,7 @@ class SecurityInterface(object):
         :return:
         """
         self.target = secTarget
-        self.dateStr = time.strftime("%d/%m/%Y")
+        self.dateStr = time.strftime("%m/%d/%Y")
 
     @abstractmethod
     def analyze(self):

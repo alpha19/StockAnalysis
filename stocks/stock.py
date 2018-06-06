@@ -1,7 +1,10 @@
+import json
 import os
-import re
-import requests
 import sqlite3
+
+import requests
+
+from core import strings
 from analysis.security_interface import SecurityInterface
 
 __author__ = 'kdedow'
@@ -9,7 +12,7 @@ __author__ = 'kdedow'
 class Stock(SecurityInterface):
     """
     This class represents a stock object. Class members to store info about stock.
-    Main objective of this class is to make API calls to keep stock info currenty
+    Main objective of this class is to make API calls to keep stock info currently
     """
     BASE_URL = "https://api.iextrading.com/1.0/stock/"
 
@@ -37,40 +40,14 @@ class Stock(SecurityInterface):
         """
 
         # Setup the connections
-        dailyData = requests.get(Stock.BASE_URL + self.target + "/chart/1d")
-        companyData = requests.get(Stock.BASE_URL + self.target + "/company")
+        quoteData = json.loads(requests.get(Stock.BASE_URL + self.target + "/quote").text)
 
-        # Get and parse the response, location in csv remains constant based on format
-        # Only interested in the first line
-        line = resp.text.splitlines()[0]
-        if line is not None:
-            stockCols = line.split(",")
-            self.company = stockCols[0]
-            self.curr = float(stockCols[1])
-            self.year_high = float(stockCols[2])
-            self.year_low = float(stockCols[3])
-
-            # Percent change requires additional analysis
-            percent = stockCols[4]
-            percentVal = float(1)
-            if percent.startswith("-"):
-                percentVal = -1
-
-            percent = re.sub('[-+%"]', '', percent)
-            percentVal *= float(percent)
-
-            self.daily_percent = percentVal
-
-            # Same with daily change
-            change = stockCols[5]
-            changeVal = float(1)
-            if(change.startswith("-")):
-                changeVal = -1
-
-            change = re.sub('[-+"]', '', change)
-            changeVal *= float(change)
-
-            self.daily_change = changeVal
+        self.company = quoteData['companyName']
+        self.curr = quoteData['latestPrice']
+        self.year_high = quoteData['week52High']
+        self.year_low = quoteData['week52Low']
+        self.daily_percent = quoteData['changePercent']
+        self.daily_change = quoteData['change']
 
     def getInfo(self):
         info = "Basic Stock Info\n\n"
