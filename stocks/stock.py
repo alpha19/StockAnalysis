@@ -4,7 +4,6 @@ import sqlite3
 
 import requests
 
-from core import strings
 from analysis.security_interface import SecurityInterface
 
 __author__ = 'kdedow'

@@ -107,6 +107,15 @@ class SecurityAnalysis(object):
     def getTrackedStocks(self):
         stocks = []
 
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        conn = sqlite3.connect(os.path.join(dir_path, '../stocks.db'))
+        tickers = conn.execute("SELECT ticker FROM basic_info").fetchall()
+
+        for stock in tickers:
+            stockObj = self.Get(stock[0])
+            stockObj.storeInfo()
+
+        conn.close()
         # open a connection and get all available stocks
 
 
