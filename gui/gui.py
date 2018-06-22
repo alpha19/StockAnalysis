@@ -7,8 +7,10 @@ from PyQt5 import QtCore
 __author__ = 'kdedow'
 
 class SecureGui(QApplication):
-    def __init__(self, argList=[]):
+    def __init__(self, argList=[], database=None):
         super().__init__(argList)
+
+        self.stockDB = database
 
         self.mainWindow = None
         self.stockTable = None
@@ -52,7 +54,7 @@ class SecureGui(QApplication):
         # Add the actual table
         tableWidget = QTableWidget()
 
-        stockAnalysis = SecurityAnalysis()
+        stockAnalysis = SecurityAnalysis(self.stockDB)
         stockAnalysis.getTrackedStocks()
 
         tableLayout.addRow(tableWidget)

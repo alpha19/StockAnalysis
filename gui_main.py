@@ -10,9 +10,9 @@ def main():
     #    # TODO: Just focusing on stocks right now
     #    analysisObj = SecurityAnalysis(security)
     #    analysisObj.runAnalysis()
-
-    app = SecureGui(sys.argv)
-    sys.exit(app.exec_())
+    with Database("../stocks.db") as db:
+        app = SecureGui(sys.argv, db)
+        sys.exit(app.exec_())
 
 if __name__ == "__main__":
     main()

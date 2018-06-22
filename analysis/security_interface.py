@@ -21,7 +21,7 @@ class SecurityInterface(object):
         self.dateStr = time.strftime("%m/%d/%Y")
 
     @abstractmethod
-    def analyze(self):
+    def queryAPI(self):
         """
         All subclasses must run some type of analysis
         :return:
@@ -37,5 +37,5 @@ class SecurityInterface(object):
         pass
 
     @abstractmethod
-    def storeInfo(self):
+    def updateInfo(self):
         pass
