@@ -16,7 +16,7 @@ class Database(object):
         # Open the conection
         return self
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_value, traceback):
         # Close the connection
         self.connnection.commit()
         self.connnection.close()
@@ -26,6 +26,8 @@ class Database(object):
         self.connnection.commit()
         self.connnection.close()
 
-    def query(self, query: str):
-        # Query the database and return the result
-        return self.connnection.execute(query)
+    def query(self, query: str, parameters=()):
+        # Query the database with parameters and return the result
+        result = self.connnection.execute(query,parameters)
+
+        return result

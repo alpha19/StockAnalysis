@@ -1,8 +1,9 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QFormLayout, QLineEdit, QTableWidget
-from gui.stock_button import StockButton
-from analysis.security_analysis import SecurityAnalysis
-
 from PyQt5 import QtCore
+from PyQt5.QtWidgets import QApplication, QWidget, QFormLayout, QLineEdit, QTableWidget
+
+from core.security_manager import SecurityManager
+from stocks.stock import Stock
+from gui.stock_button import StockButton
 
 __author__ = 'kdedow'
 
@@ -54,8 +55,10 @@ class SecureGui(QApplication):
         # Add the actual table
         tableWidget = QTableWidget()
 
-        stockAnalysis = SecurityAnalysis(self.stockDB)
-        stockAnalysis.getTrackedStocks()
+        stockAnalysis = SecurityManager(self.stockDB)
+        stocks = stockAnalysis.getTrackedStocks()
+
+        # TODO: Add individual tracked stocks to the stock table
 
         tableLayout.addRow(tableWidget)
 

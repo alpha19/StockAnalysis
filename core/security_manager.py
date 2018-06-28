@@ -1,17 +1,11 @@
 import time
-from analysis.security_types import SecurityTypes
+
+from core.security_types import SecurityTypes
 from stocks.stock import Stock
 
 __author__ = 'kdedow'
 
-"""
-NOTE: WAS WORKING ON DATABASE OBJECT. EVERYTHING SHOULD ROUTE THROUGH DB
-OBJECT FOR ALL DATABASE RELATED ITEMS.
-TODO: CHECK THAT ALL DATABASE STUFF IF WORKING
-TODO: WORK ON GET TRACKED STOCKS METHOD. THEN FILL OUT GUI TABLE OF STOCKS.
-"""
-
-class SecurityAnalysis(object):
+class SecurityManager(object):
     """
     Class to create and run analysis on a target security
     """
@@ -71,7 +65,7 @@ class SecurityAnalysis(object):
                                                                                 stockObj.year_high, stockObj.year_low,
                                                                                 stockObj.daily_percent, dateStr, 0))
 
-    def updateStock(self):
+    def updateStocks(self):
         """
 
         :return:
@@ -89,8 +83,10 @@ class SecurityAnalysis(object):
         tickers = self.stockDB.query("SELECT ticker FROM basic_info").fetchall()
 
         for stock in tickers:
-            stockObj = self.Get(stock)
-            stockObj.storeInfo()
+            stockObj = self.Get(stock[0])
+            stocks.append(stockObj)
+
+        return stocks
 
 
 

@@ -1,7 +1,7 @@
 import sys
-# TODO: ALOT OF THIS STUFF MAY BE OBSOLETE (command line stuffs)
 # TODO: Error handling. Also logging would be smart!
 from gui.gui import SecureGui
+from core.database_connection import Database
 
 __author__ = 'kdedow'
 
@@ -12,7 +12,9 @@ def main():
     #    analysisObj.runAnalysis()
     with Database("../stocks.db") as db:
         app = SecureGui(sys.argv, db)
-        sys.exit(app.exec_())
+        ret = app.exec_()
+
+    sys.exit(ret)
 
 if __name__ == "__main__":
     main()

@@ -1,9 +1,8 @@
 import json
-import os
 
 import requests
 
-from analysis.security_interface import SecurityInterface
+from core.security_interface import SecurityInterface
 
 __author__ = 'kdedow'
 
@@ -22,7 +21,7 @@ class Stock(SecurityInterface):
         """
         SecurityInterface.__init__(self, sec_target)
 
-        self.stocksDB = database
+        self.stockDB = database
 
         # Default instance variable
         self.company = ""
@@ -77,9 +76,9 @@ class Stock(SecurityInterface):
         self.stockDB.query("UPDATE basic_info SET date = ? WHERE ticker = ?", (self.dateStr, self.target))
 
         # Now check the streak
-        self.setStreaks(conn)
+        self._setStreaks()
 
-    def setStreaks(self, conn):
+    def _setStreaks(self):
         change = self.stockDB.query("SELECT daily_change FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
         currStreak = self.stockDB.query("SELECT streak FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
 
