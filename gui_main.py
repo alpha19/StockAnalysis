@@ -1,15 +1,12 @@
 import sys
 # TODO: Error handling. Also logging would be smart!
-from gui.gui import SecureGui
+from gui.main_window import SecureGui
 from core.database_connection import Database
 
 __author__ = 'kdedow'
 
 def main():
-    #if security is not "":
     #    # TODO: Just focusing on stocks right now
-    #    analysisObj = SecurityAnalysis(security)
-    #    analysisObj.runAnalysis()
     with Database("../stocks.db") as db:
         app = SecureGui(sys.argv, db)
         ret = app.exec_()

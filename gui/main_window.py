@@ -1,5 +1,5 @@
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication, QWidget, QFormLayout, QLineEdit, QTableWidget
+from PyQt5.QtWidgets import QApplication, QWidget, QFormLayout, QLineEdit, QTableWidget, QTableWidgetItem
 
 from core.security_manager import SecurityManager
 from stocks.stock import Stock
@@ -55,15 +55,37 @@ class SecureGui(QApplication):
         # Add the actual table
         tableWidget = QTableWidget()
 
+        # Add individual stocks
         stockAnalysis = SecurityManager(self.stockDB)
         stocks = stockAnalysis.getTrackedStocks()
 
-        # TODO: Add individual tracked stocks to the stock table
+        for row, stock in enumerate(stocks):
+            self._createStockEntry(stock, row, tableWidget)
+
+        # Add the header row
+        tableHeaders = ["Ticker", "Price", "Daily Change", "Company", "Date"]
+        tableWidget.setHorizontalHeaderLabels(tableHeaders)
+
+        tableWidget.resizeColumnsToContents()
+        tableWidget.resizeRowsToContents()
 
         tableLayout.addRow(tableWidget)
+        tableWidget.show()
 
         self.layout.addRow(self.stockTable)
         self.stockTable.show()
+
+    def _createStockEntry(self, stock, row, stockTable):
+        stockColumns = []
+        stockColumns.append(QTableWidgetItem(stock.target))
+        stockColumns.append(QTableWidgetItem(stock.curr))
+        stockColumns.append(QTableWidgetItem(stock.daily_change))
+        stockColumns.append(QTableWidgetItem(stock.company))
+        stockColumns.append(QTableWidgetItem(stock.dateStr))
+
+        for col, item in enumerate(stockColumns):
+            widgetItem = QTableWidgetItem(item)
+            stockTable.setItem(row, col, widgetItem)
 
     def _setupButtonWidget(self):
         # Setup the message box
