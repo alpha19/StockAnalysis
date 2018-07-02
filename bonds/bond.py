@@ -1,4 +1,4 @@
-from analysis.security_interface import SecurityInterface
+from core.security_interface import SecurityInterface
 
 __author__ = 'kdedow'
 

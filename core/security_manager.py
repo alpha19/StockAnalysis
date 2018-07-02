@@ -1,23 +1,19 @@
-import sqlite3
-import os
 import time
-from analysis.security_types import SecurityTypes
-from bonds.bond import Bond
-from stocks.stock import Stock
 
-#TODO: RETHINK THIS WHOLE CLASS
+from core.security_types import SecurityTypes
+from stocks.stock import Stock
 
 __author__ = 'kdedow'
 
-class SecurityAnalysis(object):
+class SecurityManager(object):
     """
     Class to create and run analysis on a target security
     """
-    def __init__(self):
+    def __init__(self, database=None):
         """
         :type secTarget: String
         """
-        pass
+        self.stockDB = database
 
     def Get(self, secTarget, secType=SecurityTypes.stock):
         """
@@ -27,10 +23,7 @@ class SecurityAnalysis(object):
         """
         if secType is SecurityTypes.stock:
             # Create a stock object to run analysis on
-            return Stock(secTarget)
-        elif secType is SecurityTypes.bond:
-            # Create a bond object to run analysis on.
-            return Bond(secTarget)
+            return Stock(secTarget, self.stockDB)
         else:
             # This shouldn't happen but return None if we can't find an appropriate security
             return None
@@ -45,25 +38,17 @@ class SecurityAnalysis(object):
         date = datetime.date()
         dateStr = date.month() + "/" + date.day() + "/" + date.year()
 
-        # open the connection
-        dir_path = os.path.dirname(os.path.abspath(__file__))
-        conn = sqlite3.connect(os.path.join(dir_path, '../stocks.db'))
-
         stocks = ("INTC", "AAPL", "GOOG", "YHOO", "SYK", "VZ")
 
         for stock in stocks:
             stockObj = self.securityFactory(stock)
-            stockObj.analyze()
+            stockObj.queryAPI()
 
-            conn.execute("INSERT INTO basic_info (ticker, price, daily_change, company, year_high, year_low, \
+            self.stockDB.query("INSERT INTO basic_info (ticker, price, daily_change, company, year_high, year_low, \
              daily_percent, date, streak) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (stockObj.target, stockObj.curr, \
                                                                                 stockObj.daily_change, stockObj.company,\
                                                                                 stockObj.year_high, stockObj.year_low,\
                                                                                 stockObj.daily_percent, dateStr, 0))
-
-        # Close the connection
-        conn.commit()
-        conn.close()
 
     def addStock(self, ticker=""):
         # Get the date
@@ -71,43 +56,40 @@ class SecurityAnalysis(object):
 
         # Get the stock and analyze
         stockObj = self.Get(ticker)
-        stockObj.analyze()
-
-        # open the connection
-        dir_path = os.path.dirname(os.path.abspath(__file__))
-        conn = sqlite3.connect(os.path.join(dir_path, '../stocks.db'))
+        stockObj.queryAPI()
 
         # Store the stock in the db
-        conn.execute("INSERT INTO basic_info (ticker, price, daily_change, company, year_high, year_low, \
+        self.stockDB.query("INSERT INTO basic_info (ticker, price, daily_change, company, year_high, year_low, \
              daily_percent, date, streak) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (stockObj.target, stockObj.curr,
                                                                                 stockObj.daily_change, stockObj.company,
                                                                                 stockObj.year_high, stockObj.year_low,
                                                                                 stockObj.daily_percent, dateStr, 0))
-        # Close the connection
-        conn.commit()
-        conn.close()
 
+    def removeStock(self, ticker=""):
+        self.stockDB.query("DELETE FROM basic_info WHERE ticker=?", (ticker,))
 
-    def updateStock(self):
+    def updateStocks(self):
         """
 
         :return:
         """
-        # open the connection, get ticker values, close connection
-        dir_path = os.path.dirname(os.path.abspath(__file__))
-        conn = sqlite3.connect(os.path.join(dir_path, '../stocks.db'))
-        tickers = conn.execute("SELECT ticker FROM basic_info").fetchall()
+        # Query the database for ticker symbols
+        tickers = self.stockDB.query("SELECT ticker FROM basic_info").fetchall()
 
         for stock in tickers:
-            stockObj = self.Get(stock[0])
-            stockObj.storeInfo()
-
-        conn.close()
+            stockObj = self.Get(stock)
+            stockObj.updateInfo()
 
     def getTrackedStocks(self):
         stocks = []
 
-        # open a connection and get all available stocks
+        tickers = self.stockDB.query("SELECT ticker FROM basic_info").fetchall()
+
+        for stock in tickers:
+            stockObj = self.Get(stock[0])
+            stocks.append(stockObj)
+
+        return stocks
 
 
 
