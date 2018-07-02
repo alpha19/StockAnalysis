@@ -15,6 +15,7 @@ class SecureGui(QApplication):
 
         self.mainWindow = None
         self.stockTable = None
+        self.tableWidget = None
         self.buttonWidget = None
 
         self.layout = None
@@ -24,7 +25,7 @@ class SecureGui(QApplication):
     def initialize(self):
         self.mainWindow = QWidget()
 
-        self.mainWindow.resize(500, 300)
+        self.mainWindow.resize(600, 300)
         self.mainWindow.move(300, 300)
         self.mainWindow.setWindowTitle("Tracked Stock Table")
 
@@ -33,7 +34,7 @@ class SecureGui(QApplication):
         self.mainWindow.setLayout(self.layout)
 
         self._setupStockTable()
-        self._setupButtonWidget()
+        self._setupButtonWidgets()
 
         self.mainWindow.show()
 
@@ -53,41 +54,49 @@ class SecureGui(QApplication):
         self.stockTable.setLayout(tableLayout)
 
         # Add the actual table
-        tableWidget = QTableWidget()
+        self.tableWidget = QTableWidget()
 
         # Add individual stocks
+        tableHeaders = ["Ticker", "Price", "Daily Change", "Daily Percent", "Year High", "Year Low", "Company", "Date"]
+
         stockAnalysis = SecurityManager(self.stockDB)
         stocks = stockAnalysis.getTrackedStocks()
 
+        self.tableWidget.setRowCount(len(stocks))
+        self.tableWidget.setColumnCount(len(tableHeaders))
+
         for row, stock in enumerate(stocks):
-            self._createStockEntry(stock, row, tableWidget)
+            self._createStockEntry(stock, row)
 
         # Add the header row
-        tableHeaders = ["Ticker", "Price", "Daily Change", "Company", "Date"]
-        tableWidget.setHorizontalHeaderLabels(tableHeaders)
+        self.tableWidget.setHorizontalHeaderLabels(tableHeaders)
 
-        tableWidget.resizeColumnsToContents()
-        tableWidget.resizeRowsToContents()
+        self.tableWidget.resizeColumnsToContents()
+        self.tableWidget.resizeRowsToContents()
 
-        tableLayout.addRow(tableWidget)
-        tableWidget.show()
+        tableLayout.addRow(self.tableWidget)
+        self.tableWidget.show()
 
         self.layout.addRow(self.stockTable)
         self.stockTable.show()
 
-    def _createStockEntry(self, stock, row, stockTable):
+    def _createStockEntry(self, stock, row):
         stockColumns = []
         stockColumns.append(QTableWidgetItem(stock.target))
-        stockColumns.append(QTableWidgetItem(stock.curr))
-        stockColumns.append(QTableWidgetItem(stock.daily_change))
+        stockColumns.append(QTableWidgetItem(str(stock.curr)))
+        stockColumns.append(QTableWidgetItem(str(stock.daily_change)))
+        # Convert percent from decimal value and round to 4 significant digits
+        stockColumns.append(QTableWidgetItem(str(round(100*stock.daily_percent,4))))
+        stockColumns.append(QTableWidgetItem(str(stock.year_high)))
+        stockColumns.append(QTableWidgetItem(str(stock.year_low)))
         stockColumns.append(QTableWidgetItem(stock.company))
         stockColumns.append(QTableWidgetItem(stock.dateStr))
 
         for col, item in enumerate(stockColumns):
             widgetItem = QTableWidgetItem(item)
-            stockTable.setItem(row, col, widgetItem)
+            self.tableWidget.setItem(row, col, widgetItem)
 
-    def _setupButtonWidget(self):
+    def _setupButtonWidgets(self):
         # Setup the message box
         self.buttonWidget = QWidget(self.mainWindow)
 
@@ -97,12 +106,41 @@ class SecureGui(QApplication):
 
         # Add the input dialog
         inputStock = QLineEdit("Ticker", self.buttonWidget)
+        inputStock.setMaximumWidth(100)
 
         # Setup the add stock button
         addStock = StockButton("Add Stock", self.buttonWidget)
 
-        # TODO: Add a click action to add stock
+        # Implements support for adding a new stock to DB
+        def addStockAction():
+            stockAnalysis = SecurityManager(self.stockDB)
+            stockAnalysis.addStock(inputStock.text())
 
-        btnLayout.addRow(inputStock, addStock)
+            stock = stockAnalysis.Get(inputStock.text())
+
+            self.tableWidget.insertRow(self.tableWidget.rowCount())
+            self._createStockEntry(stock, self.tableWidget.rowCount()-1)
+
+        addStock.clicked.connect(addStockAction)
+
+        # Add remove stock button
+        removeStock = StockButton("Remove Stock", self.buttonWidget)
+
+        # Implements support for adding a new stock to DB
+        def removeStockAction():
+            stockAnalysis = SecurityManager(self.stockDB)
+            stockAnalysis.removeStock(inputStock.text())
+
+            stocks = stockAnalysis.getTrackedStocks()
+
+            self.tableWidget.setRowCount(len(stocks))
+
+            for row, stock in enumerate(stocks):
+                self._createStockEntry(stock, row)
+
+        removeStock.clicked.connect(removeStockAction)
+
+        btnLayout.addRow(inputStock)
+        btnLayout.addRow(addStock, removeStock)
         self.layout.addRow(self.buttonWidget)
         self.buttonWidget.show()

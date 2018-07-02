@@ -31,6 +31,8 @@ class Stock(SecurityInterface):
         self.daily_percent = 0
         self.daily_change = 0
 
+        self._initialize()
+
     # TODO: Change the name of this function. Should not be analyzing anything
     def queryAPI(self):
         """
@@ -99,7 +101,7 @@ class Stock(SecurityInterface):
 
     def _initialize(self):
         # Query the database (if it exists)
-        if self.stocksDB is not None:
+        if self.stockDB is not None:
             try:
                 self.company = self.stockDB.query("SELECT company FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
                 self.curr = self.stockDB.query("SELECT price FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]

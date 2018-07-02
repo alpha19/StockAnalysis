@@ -65,6 +65,9 @@ class SecurityManager(object):
                                                                                 stockObj.year_high, stockObj.year_low,
                                                                                 stockObj.daily_percent, dateStr, 0))
 
+    def removeStock(self, ticker=""):
+        self.stockDB.query("DELETE FROM basic_info WHERE ticker=?", (ticker,))
+
     def updateStocks(self):
         """
 
