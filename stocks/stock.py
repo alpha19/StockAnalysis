@@ -1,6 +1,7 @@
 import json
 
 import requests
+import time
 
 from core.security_interface import SecurityInterface
 
@@ -84,18 +85,24 @@ class Stock(SecurityInterface):
         change = self.stockDB.query("SELECT daily_change FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
         currStreak = self.stockDB.query("SELECT streak FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
 
-        # First check prevents errors
-        if currStreak is None:
-            currStreak = 0
+        dbDateStr = self.stockDB.query("SELECT date FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        dbDate = time.strptime(dbDateStr, "%m/%d/%Y")
+        currDate = time.localtime()
 
-        if change < 0 and currStreak < 0:
-            currStreak -= 1
-        elif change < 0 and currStreak >= 0:
-            currStreak = -1
-        elif change > 0 and currStreak > 0:
-            currStreak += 1
-        else:
-            currStreak = 1
+        # Only update if the date was updated a day or more ago
+        if dbDate.tm_mday < currDate.tm_mday or dbDate.tm_mon < currDate.tm_mon or dbDate.tm_year < currDate.tm_year:
+            # First check prevents errors
+            if currStreak is None:
+                currStreak = 0
+
+            if change < 0 and currStreak < 0:
+                currStreak -= 1
+            elif change < 0 and currStreak >= 0:
+                currStreak = -1
+            elif change > 0 and currStreak > 0:
+                currStreak += 1
+            else:
+                currStreak = 1
 
         self.stockDB.query("UPDATE basic_info SET streak = ? WHERE ticker = ?", (currStreak, self.target))
 

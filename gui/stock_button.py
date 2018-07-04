@@ -7,6 +7,7 @@ class StockButton(QPushButton):
         super().__init__(name, widget)
 
         self.resize(self.sizeHint())
+        self.setMaximumWidth(150)
 
     def setClickAction(self, action):
         pass

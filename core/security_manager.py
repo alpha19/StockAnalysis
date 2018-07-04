@@ -51,9 +51,6 @@ class SecurityManager(object):
                                                                                 stockObj.daily_percent, dateStr, 0))
 
     def addStock(self, ticker=""):
-        # Get the date
-        dateStr = time.strftime("%d/%m/%Y")
-
         # Get the stock and analyze
         stockObj = self.Get(ticker)
         stockObj.queryAPI()
@@ -63,7 +60,7 @@ class SecurityManager(object):
              daily_percent, date, streak) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (stockObj.target, stockObj.curr,
                                                                                 stockObj.daily_change, stockObj.company,
                                                                                 stockObj.year_high, stockObj.year_low,
-                                                                                stockObj.daily_percent, dateStr, 0))
+                                                                                stockObj.daily_percent, stockObj.dateStr, 0))
 
     def removeStock(self, ticker=""):
         self.stockDB.query("DELETE FROM basic_info WHERE ticker=?", (ticker,))
@@ -77,7 +74,7 @@ class SecurityManager(object):
         tickers = self.stockDB.query("SELECT ticker FROM basic_info").fetchall()
 
         for stock in tickers:
-            stockObj = self.Get(stock)
+            stockObj = self.Get(stock[0])
             stockObj.updateInfo()
 
     def getTrackedStocks(self):

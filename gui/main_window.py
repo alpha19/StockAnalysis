@@ -1,5 +1,5 @@
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication, QWidget, QFormLayout, QLineEdit, QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets import QApplication, QWidget, QFormLayout, QHBoxLayout, QLineEdit, QTableWidget, QTableWidgetItem
 
 from core.security_manager import SecurityManager
 from stocks.stock import Stock
@@ -17,6 +17,7 @@ class SecureGui(QApplication):
         self.stockTable = None
         self.tableWidget = None
         self.buttonWidget = None
+        self.formWidget = None
 
         self.layout = None
 
@@ -99,10 +100,15 @@ class SecureGui(QApplication):
     def _setupButtonWidgets(self):
         # Setup the message box
         self.buttonWidget = QWidget(self.mainWindow)
+        self.formWidget = QWidget(self.mainWindow)
 
-        btnLayout = QFormLayout()
-        btnLayout.setFormAlignment(QtCore.Qt.AlignBottom)
+        btnLayout = QHBoxLayout()
+        btnLayout.setAlignment(QtCore.Qt.AlignBottom)
         self.buttonWidget.setLayout(btnLayout)
+
+        formLayout = QHBoxLayout()
+        formLayout.setAlignment(QtCore.Qt.AlignBottom)
+        self.formWidget.setLayout(formLayout)
 
         # Add the input dialog
         inputStock = QLineEdit("Ticker", self.buttonWidget)
@@ -140,7 +146,30 @@ class SecureGui(QApplication):
 
         removeStock.clicked.connect(removeStockAction)
 
-        btnLayout.addRow(inputStock)
-        btnLayout.addRow(addStock, removeStock)
+        # Add update stock button
+        updateStock = StockButton("Update Stock(s)", self.buttonWidget)
+
+        # Implements support for updating the stock table entry
+        def updateStockAction():
+            stockAnalysis = SecurityManager(self.stockDB)
+            stockAnalysis.updateStocks()
+
+            stocks = stockAnalysis.getTrackedStocks()
+
+            self.tableWidget.setRowCount(len(stocks))
+
+            for row, stock in enumerate(stocks):
+                self._createStockEntry(stock, row)
+
+        updateStock.clicked.connect(updateStockAction)
+
+        formLayout.addWidget(inputStock)
+
+        btnLayout.addWidget(addStock)
+        btnLayout.addWidget(removeStock)
+        btnLayout.addWidget(updateStock)
+
         self.layout.addRow(self.buttonWidget)
+        self.layout.addRow(self.formWidget)
+
         self.buttonWidget.show()
