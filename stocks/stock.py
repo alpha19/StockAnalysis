@@ -85,8 +85,7 @@ class Stock(SecurityInterface):
         change = self.stockDB.query("SELECT daily_change FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
         currStreak = self.stockDB.query("SELECT streak FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
 
-        dbDateStr = self.stockDB.query("SELECT date FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
-        dbDate = time.strptime(dbDateStr, "%m/%d/%Y")
+        dbDate = time.strptime(self.stockDB.query("SELECT date FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0], "%m/%d/%Y")
         currDate = time.localtime()
 
         # Only update if the date was updated a day or more ago
