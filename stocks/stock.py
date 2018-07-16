@@ -82,10 +82,10 @@ class Stock(SecurityInterface):
         self._setStreaks()
 
     def _setStreaks(self):
-        change = self.stockDB.query("SELECT daily_change FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
-        currStreak = self.stockDB.query("SELECT streak FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+        change = self.stockDB.query("SELECT daily_change FROM basic_info WHERE ticker=?", (self.target,))[0][0]
+        currStreak = self.stockDB.query("SELECT streak FROM basic_info WHERE ticker=?", (self.target,))[0][0]
 
-        dbDate = time.strptime(self.stockDB.query("SELECT date FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0], "%m/%d/%Y")
+        dbDate = time.strptime(self.stockDB.query("SELECT date FROM basic_info WHERE ticker=?", (self.target,))[0][0], "%m/%d/%Y")
         currDate = time.localtime()
 
         # Only update if the date was updated a day or more ago
@@ -109,12 +109,12 @@ class Stock(SecurityInterface):
         # Query the database (if it exists)
         if self.stockDB is not None:
             try:
-                self.company = self.stockDB.query("SELECT company FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
-                self.curr = self.stockDB.query("SELECT price FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
-                self.year_high = self.stockDB.query("SELECT year_high FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
-                self.year_low = self.stockDB.query("SELECT year_low FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
-                self.daily_percent = self.stockDB.query("SELECT daily_percent FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
-                self.daily_change = self.stockDB.query("SELECT daily_change FROM basic_info WHERE ticker=?", (self.target,)).fetchall()[0][0]
+                self.company = self.stockDB.query("SELECT company FROM basic_info WHERE ticker=?", (self.target,))[0][0]
+                self.curr = self.stockDB.query("SELECT price FROM basic_info WHERE ticker=?", (self.target,))[0][0]
+                self.year_high = self.stockDB.query("SELECT year_high FROM basic_info WHERE ticker=?", (self.target,))[0][0]
+                self.year_low = self.stockDB.query("SELECT year_low FROM basic_info WHERE ticker=?", (self.target,))[0][0]
+                self.daily_percent = self.stockDB.query("SELECT daily_percent FROM basic_info WHERE ticker=?", (self.target,))[0][0]
+                self.daily_change = self.stockDB.query("SELECT daily_change FROM basic_info WHERE ticker=?", (self.target,))[0][0]
             except:
                 # Don't worry about a database query failing, leave fields empty
                 pass

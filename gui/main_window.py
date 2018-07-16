@@ -1,13 +1,22 @@
+"""
+Handles various items relating to the main GUI window.
+
+Author: Karl Dedow
+
+"""
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QFormLayout, QHBoxLayout, QLineEdit, QTableWidget, QTableWidgetItem
 
 from core.security_manager import SecurityManager
-from stocks.stock import Stock
 from gui.stock_button import StockButton
 
 __author__ = 'kdedow'
 
 class SecureGui(QApplication):
+    """
+    Sets up and presents the main GUI window. The main windows lists all tracked stocks and
+    adds buttons to add, remove, and delete stocks.
+    """
     def __init__(self, argList=[], database=None):
         super().__init__(argList)
 
@@ -38,14 +47,6 @@ class SecureGui(QApplication):
         self._setupButtonWidgets()
 
         self.mainWindow.show()
-
-    def onAnalyzeClick(self):
-        # TODO: There will eventually be analysis methods
-        pass
-
-    def onAddStockClick(self):
-        # Adds a new stock to the stock database.
-        pass
 
     def _setupStockTable(self):
         self.stockTable = QWidget()
@@ -127,7 +128,7 @@ class SecureGui(QApplication):
             self.tableWidget.insertRow(self.tableWidget.rowCount())
             self._createStockEntry(stock, self.tableWidget.rowCount()-1)
 
-        addStock.clicked.connect(addStockAction)
+        addStock.setClickAction(addStockAction)
 
         # Add remove stock button
         removeStock = StockButton("Remove Stock", self.buttonWidget)
@@ -144,7 +145,7 @@ class SecureGui(QApplication):
             for row, stock in enumerate(stocks):
                 self._createStockEntry(stock, row)
 
-        removeStock.clicked.connect(removeStockAction)
+        removeStock.setClickAction(removeStockAction)
 
         # Add update stock button
         updateStock = StockButton("Update Stock(s)", self.buttonWidget)
@@ -161,7 +162,8 @@ class SecureGui(QApplication):
             for row, stock in enumerate(stocks):
                 self._createStockEntry(stock, row)
 
-        updateStock.clicked.connect(updateStockAction)
+        # Note: We are starting a thread on button click to avoid main GUI thread from temporarily freezing
+        updateStock.setClickAction(updateStockAction)
 
         formLayout.addWidget(inputStock)
 

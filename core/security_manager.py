@@ -71,7 +71,7 @@ class SecurityManager(object):
         :return:
         """
         # Query the database for ticker symbols
-        tickers = self.stockDB.query("SELECT ticker FROM basic_info").fetchall()
+        tickers = self.stockDB.query("SELECT ticker FROM basic_info")
 
         for stock in tickers:
             stockObj = self.Get(stock[0])
@@ -80,7 +80,7 @@ class SecurityManager(object):
     def getTrackedStocks(self):
         stocks = []
 
-        tickers = self.stockDB.query("SELECT ticker FROM basic_info").fetchall()
+        tickers = self.stockDB.query("SELECT ticker FROM basic_info")
 
         for stock in tickers:
             stockObj = self.Get(stock[0])

@@ -10,7 +10,6 @@ class Database(object):
 
     def __init__(self, path: str):
         self.path = os.path.join(os.path.dirname(os.path.abspath(__file__)), path)
-        self.connnection = sqlite3.connect(self.path)
 
     def __enter__(self):
         # Open the conection
@@ -18,16 +17,18 @@ class Database(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         # Close the connection
-        self.connnection.commit()
-        self.connnection.close()
+        pass
 
     def close(self):
         # Close the connection
-        self.connnection.commit()
-        self.connnection.close()
+        pass
 
     def query(self, query: str, parameters=()):
         # Query the database with parameters and return the result
-        result = self.connnection.execute(query,parameters)
+        connection = sqlite3.connect(self.path)
+        result = connection.execute(query, parameters).fetchall()
+        # Commit the result
+        connection.commit()
+        connection.close()
 
         return result
