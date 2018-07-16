@@ -26,7 +26,7 @@ class SecureGui(QApplication):
     def initialize(self):
         self.mainWindow = QWidget()
 
-        self.mainWindow.resize(600, 300)
+        self.mainWindow.resize(790, 350)
         self.mainWindow.move(300, 300)
         self.mainWindow.setWindowTitle("Tracked Stock Table")
 

@@ -89,7 +89,7 @@ class Stock(SecurityInterface):
         currDate = time.localtime()
 
         # Only update if the date was updated a day or more ago
-        if dbDate.tm_mday < currDate.tm_mday or dbDate.tm_mon < currDate.tm_mon or dbDate.tm_year < currDate.tm_year:
+        if dbDate.tm_yday < currDate.tm_yday or dbDate.tm_year < currDate.tm_year:
             # First check prevents errors
             if currStreak is None:
                 currStreak = 0
