@@ -117,9 +117,23 @@ class SecureGui(QApplication):
 
         # Setup the add stock button
         addStock = StockButton("Add Stock", self.buttonWidget)
+        removeStock = StockButton("Remove Stock", self.buttonWidget)
+        updateStock = StockButton("Update Stock(s)", self.buttonWidget)
+
+        def disableButtons():
+            addStock.setEnabled(False)
+            removeStock.setEnabled(False)
+            updateStock.setEnabled(False)
+
+        def enableButtons():
+            addStock.setEnabled(True)
+            removeStock.setEnabled(True)
+            updateStock.setEnabled(True)
 
         # Implements support for adding a new stock to DB
         def addStockAction():
+            disableButtons()
+
             stockAnalysis = SecurityManager(self.stockDB)
             stockAnalysis.addStock(inputStock.text())
 
@@ -128,13 +142,14 @@ class SecureGui(QApplication):
             self.tableWidget.insertRow(self.tableWidget.rowCount())
             self._createStockEntry(stock, self.tableWidget.rowCount()-1)
 
-        addStock.setClickAction(addStockAction)
+            enableButtons()
 
-        # Add remove stock button
-        removeStock = StockButton("Remove Stock", self.buttonWidget)
+        addStock.setClickAction(addStockAction)
 
         # Implements support for adding a new stock to DB
         def removeStockAction():
+            disableButtons()
+
             stockAnalysis = SecurityManager(self.stockDB)
             stockAnalysis.removeStock(inputStock.text())
 
@@ -145,13 +160,14 @@ class SecureGui(QApplication):
             for row, stock in enumerate(stocks):
                 self._createStockEntry(stock, row)
 
-        removeStock.setClickAction(removeStockAction)
+            enableButtons()
 
-        # Add update stock button
-        updateStock = StockButton("Update Stock(s)", self.buttonWidget)
+        removeStock.setClickAction(removeStockAction)
 
         # Implements support for updating the stock table entry
         def updateStockAction():
+            disableButtons()
+
             stockAnalysis = SecurityManager(self.stockDB)
             stockAnalysis.updateStocks()
 
@@ -161,6 +177,8 @@ class SecureGui(QApplication):
 
             for row, stock in enumerate(stocks):
                 self._createStockEntry(stock, row)
+
+            enableButtons()
 
         # Note: We are starting a thread on button click to avoid main GUI thread from temporarily freezing
         updateStock.setClickAction(updateStockAction)

@@ -2,6 +2,7 @@ import time
 
 from core.security_types import SecurityTypes
 from stocks.stock import Stock
+from threading import Thread
 
 __author__ = 'kdedow'
 
@@ -75,7 +76,10 @@ class SecurityManager(object):
 
         for stock in tickers:
             stockObj = self.Get(stock[0])
-            stockObj.updateInfo()
+
+            # TODO: Make sure this is safe (e.g no critical sections, appropriate thread completion)
+            thread = Thread(target=stockObj.updateInfo())
+            thread.start()
 
     def getTrackedStocks(self):
         stocks = []
