@@ -57,11 +57,14 @@ class SecurityManager(object):
         stockObj.queryAPI()
 
         # Store the stock in the db
-        self.stockDB.query("INSERT INTO basic_info (ticker, price, daily_change, company, year_high, year_low, \
+        try:
+            self.stockDB.query("INSERT INTO basic_info (ticker, price, daily_change, company, year_high, year_low, \
              daily_percent, date, streak) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (stockObj.target, stockObj.curr,
                                                                                 stockObj.daily_change, stockObj.company,
                                                                                 stockObj.year_high, stockObj.year_low,
                                                                                 stockObj.daily_percent, stockObj.dateStr, 0))
+        except:
+            print("THIS MEANS WE ALREADY HAVE THE STOCK!")
 
     def removeStock(self, ticker=""):
         self.stockDB.query("DELETE FROM basic_info WHERE ticker=?", (ticker,))
