@@ -19,6 +19,7 @@ class SecurityInterface(object):
         """
         self.target = secTarget
         self.dateStr = time.strftime("%m/%d/%Y")
+        self.timeStr = time.strftime("%H:%M")
 
     @abstractmethod
     def queryAPI(self):

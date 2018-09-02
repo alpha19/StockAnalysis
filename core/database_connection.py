@@ -11,12 +11,19 @@ class Database(object):
     def __init__(self, path: str):
         self.path = os.path.join(os.path.dirname(os.path.abspath(__file__)), path)
 
+    # NOTE: All the open/close methods do not contain any functionality right now.
+    #       This is because the query method connects, executes, commits, and closes a connection.
+    #       This may change in the future. Haven't fully scoped the trade offs..
     def __enter__(self):
         # Open the conection
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         # Close the connection
+        pass
+
+    def open(self):
+        # Open the connection
         pass
 
     def close(self):
