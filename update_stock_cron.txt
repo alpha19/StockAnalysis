@@ -1,1 +1,0 @@
-50 18 * * * /Users/kdedow/anaconda/bin/ Users/kdedow/PycharmProjects/SecuritiesAnalysis/cron_main.py
