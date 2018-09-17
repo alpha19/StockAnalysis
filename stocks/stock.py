@@ -77,6 +77,7 @@ class Stock(SecurityInterface):
         self.stockDB.query("UPDATE basic_info SET year_high = ? WHERE ticker = ?", (self.year_high, self.target))
         self.stockDB.query("UPDATE basic_info SET year_low = ? WHERE ticker = ?", (self.year_low, self.target))
         self.stockDB.query("UPDATE basic_info SET date = ? WHERE ticker = ?", (self.dateStr, self.target))
+        self.stockDB.query("UPDATE basic_info SET time = ? WHERE ticker = ?", (self.timeStr, self.target))
 
         # Now check the streak
         self._setStreaks()

@@ -36,6 +36,7 @@ class SecurityManager(object):
         :return:
         """
         # Get the date
+        # NOTE: This is probably un
         date = datetime.date()
         dateStr = date.month() + "/" + date.day() + "/" + date.year()
 
