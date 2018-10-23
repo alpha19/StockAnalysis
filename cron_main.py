@@ -13,8 +13,10 @@ def main():
         # Now email the updated table to interested recipients
         # TODO: Format the actual email body and subject with the tracked stock table!!!
         email = Email()
-        email.setSubject("This is a subject")
-        email.addTextMessage("This is the message")
+        email.setSubject("Periodic Update from Stock Tracker Personal Project")
+        email.addTextMessage("Here is your wonderful update. The list of tracked stocks was recently updated."
+                             "Below you will find the most up to date info on the tracked stocks. Amazing.")
+        email.addHTMLMessage(analysisObj.getHTMLTable())
 
         email.sendMessage()
 
