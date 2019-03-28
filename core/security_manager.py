@@ -96,6 +96,63 @@ class SecurityManager(object):
 
         return stocks
 
+    def getHTMLTable(self):
+        """
+        Create a a table of the tracked stocks
 
+        :return:
+        """
+        stocks = self.getTrackedStocks()
 
+        html = " \
+        <html> \
+            <head></head> \
+            <body> \
+                <table> \
+                    <tr> \
+                        <th>Ticker</th> \
+                        <th>Company</th> \
+                        <th>Price</th> \
+                        <th>Daily Change</th> \
+                        <th>Daily Percent Change</th> \
+                        <th>Year High</th> \
+                        <th>Year Low</th> \
+                    </tr>"
+
+        for stock in stocks:
+            html += "<tr>"
+
+            html += "<td>"
+            html += str(stock.target)
+            html += "</td>"
+
+            html += "<td>"
+            html += str(stock.company)
+            html += "</td>"
+
+            html += "<td>"
+            html += str(stock.curr)
+            html += "</td>"
+
+            html += "<td>"
+            html += str(stock.daily_change)
+            html += "</td>"
+
+            html += "<td>"
+            html += str(stock.daily_percent)
+            html += "</td>"
+
+            html += "<td>"
+            html += str(stock.year_high)
+            html += "</td>"
+
+            html += "<td>"
+            html += str(stock.year_low)
+            html += "</td>"
+
+            html += "</tr>"
+
+        html += "</table></body></html>"
+
+        return html
 

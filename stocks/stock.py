@@ -13,6 +13,7 @@ class Stock(SecurityInterface):
     Main objective of this class is to make API calls to keep stock info currently
     """
     BASE_URL = "https://api.iextrading.com/1.0/stock/"
+    PERCENT_MULTIPLIER = 100
 
     def __init__(self, sec_target="",database=None):
         """
@@ -48,7 +49,7 @@ class Stock(SecurityInterface):
         self.curr = quoteData['latestPrice']
         self.year_high = quoteData['week52High']
         self.year_low = quoteData['week52Low']
-        self.daily_percent = quoteData['changePercent']
+        self.daily_percent = Stock.PERCENT_MULTIPLIER * int(quoteData['changePercent'])
         self.daily_change = quoteData['change']
 
     def getInfo(self):
