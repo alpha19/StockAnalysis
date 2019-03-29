@@ -1,7 +1,7 @@
 """
 Handles various items relating to the main GUI window.
 
-Author: Karl Dedow
+Author: Karl Dedow this isn't working
 
 """
 from PyQt5 import QtCore
