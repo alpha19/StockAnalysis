@@ -1,8 +1,7 @@
 """
 Handles various items relating to the main GUI window.
 
-Author: Karl Dedow this isn't working
-
+Author: Karl Dedow
 """
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QApplication, QWidget, QFormLayout, QHBoxLayout, QLineEdit, QTableWidget, QTableWidgetItem
