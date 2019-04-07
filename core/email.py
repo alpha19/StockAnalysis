@@ -36,12 +36,12 @@ class Email(smtplib.SMTP_SSL):
         #       public/private key methodology
 
         # Read file
-        pem = os.getenv("HOME") + "/.ssh/id_rsa"
+        pem = os.path.expanduser("~") + "/.ssh/id_rsa"
         with open(pem, "rb") as key_file:
             private_key = serialization.load_pem_private_key(key_file.read(),password=None,backend=default_backend())
 
         # Decrypt
-        encrypt = os.getenv("HOME") + "/stock_email_credentials_encrypt.txt"
+        encrypt = os.path.expanduser("~") + "/stock_email_credentials_encrypt.txt"
         with open(encrypt, "rb") as encrypt_file:
             cipher_text = encrypt_file.read()
 
