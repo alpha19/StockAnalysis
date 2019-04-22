@@ -31,6 +31,7 @@ class Database(object):
         pass
 
     def query(self, query: str, parameters=()):
+
         # Query the database with parameters and return the result
         connection = sqlite3.connect(self.path)
         result = connection.execute(query, parameters).fetchall()
