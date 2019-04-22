@@ -2,9 +2,17 @@ from core.database_connection import Database
 from core.security_manager import SecurityManager
 from core.email import Email
 
+from core.logging import Logging
+
 __author__ = 'kdedow'
 
 def main():
+    # Setup Logging
+    Logging.EnableLogger()
+    Logging.SetFile(filename="stock_analysis_cron_main")
+
+    Logging.Debug("First log message")
+
     with Database("../stocks.db") as db:
         analysisObj = SecurityManager(db)
         # First update the stock table
