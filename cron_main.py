@@ -11,15 +11,17 @@ def main():
     Logging.EnableLogger()
     Logging.SetFile(filename="stock_analysis_cron_main")
 
-    Logging.Debug("First log message")
+    Logging.DEBUG("Entering cron main.")
 
     with Database("../stocks.db") as db:
+        Logging.DEBUG("Opened stock database successfully.")
         analysisObj = SecurityManager(db)
         # First update the stock table
         analysisObj.updateStocks()
 
+        Logging.DEBUG("Succesfully updated tracked stocks.")
         # Now email the updated table to interested recipients
-        # TODO: Format the actual email body and subject with the tracked stock table!!!
+        # TODO: Deprectate this at some point as it is not useful to anyone really.
         email = Email()
         email.setSubject("Periodic Update from Stock Tracker Personal Project")
         email.addTextMessage("Here is your wonderful update. The list of tracked stocks was recently updated."

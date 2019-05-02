@@ -1,6 +1,8 @@
 import sqlite3
 import os
 
+from core.logging import Logging
+
 __author__ = 'kdedow'
 
 class Database(object):
@@ -34,6 +36,10 @@ class Database(object):
 
         # Query the database with parameters and return the result
         connection = sqlite3.connect(self.path)
+
+        Logging.DEBUG("SQL Query: " + query)
+        Logging.DEBUG("Parameters: " + ",".join([str(i) for i in parameters]) + "\n")
+
         result = connection.execute(query, parameters).fetchall()
         # Commit the result
         connection.commit()
