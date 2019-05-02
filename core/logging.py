@@ -21,7 +21,7 @@ class Logging:
 
     @staticmethod
     def SetFile(filename="general_stock_analysis_log"):
-        filename += "_{date:%Y-%m-%d %H:%M:%S}.log".format(date=datetime.datetime.now())
+        filename += "_{date:%Y-%m-%d_%H-%M-%S}.log".format(date=datetime.datetime.now())
 
         handle = logging.FileHandler("/var/logs/" + filename, 'w')
         handle.setFormatter(logging.Formatter(Logging.DEFAULT_FORMAT))
@@ -39,5 +39,14 @@ class Logging:
         pass
 
     @staticmethod
-    def Debug(msg=""):
+    def DEBUG(msg=""):
         logging.debug(msg)
+
+    @staticmethod
+    def SCOPE(func):
+        def decorated_func(*args, **kwargs):
+            logging.info("Entering: " + func.__name__)
+            result = func(*args, **kwargs)
+            logging.info("Exiting: " + func.__name__)
+            return result
+        return decorated_func

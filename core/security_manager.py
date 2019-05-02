@@ -4,6 +4,8 @@ from core.security_types import SecurityTypes
 from stocks.stock import Stock
 from threading import Thread
 
+from core.logging import Logging
+
 __author__ = 'kdedow'
 
 class SecurityManager(object):
@@ -70,6 +72,7 @@ class SecurityManager(object):
     def removeStock(self, ticker=""):
         self.stockDB.query("DELETE FROM basic_info WHERE ticker=?", (ticker,))
 
+    @Logging.SCOPE
     def updateStocks(self):
         """
 
@@ -77,13 +80,19 @@ class SecurityManager(object):
         """
         # Query the database for ticker symbols
         tickers = self.stockDB.query("SELECT ticker FROM basic_info")
-
+        threads = []
         for stock in tickers:
+            Logging.DEBUG("Updating " + str(stock[0]))
             stockObj = self.Get(stock[0])
 
             # TODO: Make sure this is safe (e.g no critical sections, appropriate thread completion)
-            thread = Thread(target=stockObj.updateInfo())
+            threads.append(Thread(target=stockObj.updateInfo()))
+
+        for thread in threads:
             thread.start()
+        for thread in threads:
+            thread.join()
+
 
     def getTrackedStocks(self):
         stocks = []

@@ -4,6 +4,7 @@ import requests
 import time
 
 from core.security_interface import SecurityInterface
+from core.logging import Logging
 
 __author__ = 'kdedow'
 
@@ -36,6 +37,7 @@ class Stock(SecurityInterface):
         self._initialize()
 
     # TODO: Change the name of this function. Should not be analyzing anything
+    @Logging.SCOPE
     def queryAPI(self):
         """
         Update the given stock with current values
@@ -64,6 +66,7 @@ class Stock(SecurityInterface):
         return info
 
     # TODO: MIGHT WANT TO MOVE THIS METHOD INTO SECURITY ANALYSIS CLASS
+    @Logging.SCOPE
     def updateInfo(self):
         # Query the yahoo API for current info
         self.queryAPI()
