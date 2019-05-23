@@ -1,7 +1,7 @@
 # Overview
 Basic goals are twofold:
 1. Work on Python programming skills
-2. Design an infrastructure that can peridocially track and analyze stocks that are of interest to the user
+2. Design an infrastructure that can periodically track and analyze stocks that are of interest to the user
 3. Create an interface that can display stocks to a user
 Right now, the source code is pretty simple. It provides a mechanism through which a user can setup a recurring task that will update one's tracked stocks, as well as a simple GUI for displaying, adding, and removing tracked stock. 
 # Components
