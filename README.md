@@ -43,6 +43,7 @@ Python3 (3.7 is what I use). Newer versions should work too.
 #### Python Virtual Environment ####
 It's recommended to use a python virtual environment to isolate the dependencies for the project from your system's python install (among other reasons). A good link describing virtual environments is here:
 > https://docs.python-guide.org/dev/virtualenvs/
+
 To set up a virtual environment perform the following steps:
 1. Install virtualenv with pip
 > pip install virtaulenv
@@ -60,7 +61,7 @@ In PyCharm you will need to change the default python interpreter to the virtual
 3. Select **Project Interpreter**, then select the dropdown next to the project interpreter row.
 4. Select **Show All...**, then select **+** button to add a new python interpreter (e.g. the virtual interpreter)
     1. Navigate to the base directory of the virtual environment:
-        1. On Windows, %USERPROFILE%\Envs\**NAME_OF_VIRTUAL_ENV**\Scripts\python.exe
+        1. On Windows, %USERPROFILE%\Envs\\**NAME_OF_VIRTUAL_ENV**\\Scripts\python.exe
         2. On Linux, ~/Envs/**NAME_OF_VIRTUAL_ENV**\Scripts\python
 Once all these steps are complete your project should now point to the virtual environment in PyCharm.
  **NOTE: None of this is required - however, it can be helpful**
