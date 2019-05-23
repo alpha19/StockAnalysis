@@ -8,6 +8,7 @@ Right now, the source code is pretty simple. It provides a mechanism through whi
 There are two main components to the Stock Analysis project so far:
 1. GUI              - Displays list of tracked stocks and allows users to add or remove stocks from list of tracked stocks.
 2. Update Service   - Updates list of currently tracked stocks (stored in a local SQLite database) with up to date information and sends email (to be deprecated)
+3. Web Interface    - This is currently WIP. But the long-term goal is for the GUI to be deprecated in favor of a web service (developed with Django)
 The expectation is for the GUI to be deployed and run by whoever; the update service should really only be run by the server backend. However, since this is just a pet project that isn't really worked on all that much, anyone should feel free to run the update service.
 # Setup Development Environment
 1. Install PyCharm Community Edition
@@ -43,6 +44,7 @@ Python3 (3.4 is what I use). Newer versions should work too.
 * PyQt5
 * requests
 * cryptography
+* django
 # Deficiencies
 The overall stock database is local to the user and is tracked by the repository. The hope is to stop tracking the database - instead providing a template db in this repo - in the short term.
 Longer term goal include actually deploying a server to host the db, task initiation (analysis and updates), and web server backend.
