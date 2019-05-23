@@ -39,7 +39,31 @@ To setup your system for sending emails through the update service, do the follo
 To run the update service, a user can then run **cron_main.py**
 ### Dependencies ###
 Recommended IDE - Pycharm Community Edition
-Python3 (3.4 is what I use). Newer versions should work too.
+Python3 (3.7 is what I use). Newer versions should work too.
+#### Python Virtual Environment ####
+It's recommended to use a python virtual environment to isolate the dependencies for the project from your system's python install (among other reasons). A good link describing virtual environments is here:
+> https://docs.python-guide.org/dev/virtualenvs/
+To set up a virtual environment perform the following steps:
+1. Install virtualenv with pip
+> pip install virtaulenv
+2. Install virtualenvwrapper
+> pip install virtualenvwrapper
+3. For Windows users, also install virtualenvwrapper-win
+> pip install virtualenvwrapper-win
+4. Create the python virtual environment. You can call it whatever you want, but I am calling it **venv_stock_analysis**
+> mkvirtualenv venv_stock_analysis
+ You should now have a virtual environment setup for your project. In a bash terminal or command prompt, you can send the following command to start using the virtual envrionment.
+> workon venv_stock_analysis
+In PyCharm you will need to change the default python interpreter to the virtual environment interpreter we just created.
+1. In PyCharm menu bar select **File->Settings**
+2. In Settings window, navigate to **Project: StockAnalysis**
+3. Select **Project Interpreter**, then select the dropdown next to the project interpreter row.
+4. Select **Show All...**, then select **+** button to add a new python interpreter (e.g. the virtual interpreter)
+    1. Navigate to the base directory of the virtual environment:
+        1. On Windows, %USERPROFILE%\Envs\**NAME_OF_VIRTUAL_ENV**\Scripts\python.exe
+        2. On Linux, ~/Envs/**NAME_OF_VIRTUAL_ENV**\Scripts\python
+Once all these steps are complete your project should now point to the virtual environment in PyCharm.
+ **NOTE: None of this is required - however, it can be helpful**
 #### Python Packages ####
 * PyQt5
 * requests
