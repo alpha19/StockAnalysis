@@ -1,7 +1,6 @@
 from django.db import models
 
 # Create your models here.
-
 class Stock(models.Model):
     """
     Representation of a specific stock (from an exchange)
@@ -17,5 +16,3 @@ class Stock(models.Model):
     date_added = models.DateField(help_text="The date the stock was added to the database", auto_now_add=True)
     streak = models.IntegerField(help_text="Represents a streak of positive or negative earnings.")
     # TODO: Add a foreign key to the user_accounts database model
-
-
