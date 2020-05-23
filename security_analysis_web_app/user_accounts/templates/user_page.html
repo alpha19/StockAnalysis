@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>User Home</h1>
+  <p>Welcome {{user_name}}, a website developed by <em>Karl Dedow</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>This User Has Some Information:</p>
+  <ul>
+    <li><strong>Num Stocks:</strong> {{ num_stocks }}</li>
+  </ul>
+{% endblock %}
