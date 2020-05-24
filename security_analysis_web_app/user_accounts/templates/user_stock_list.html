@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Stock List</h1>
+  {% if user_stock_list %}
+  <ul>
+    {% for stock in user_stock_list %}
+      <li>
+        <a href="">{{ stock.company_name }}</a> (${{stock.price}})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no tracked stocks.</p>
+  {% endif %}       
+{% endblock %}
