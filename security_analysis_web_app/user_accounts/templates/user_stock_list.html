@@ -12,5 +12,10 @@
   </ul>
   {% else %}
     <p>There are no tracked stocks.</p>
-  {% endif %}       
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Add</button>
+</form>
 {% endblock %}
