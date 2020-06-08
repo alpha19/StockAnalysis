@@ -3,8 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
 
-from ..stock_management.models import Stock
-from ..stock_management.forms import NewStockForm
+from stock_management.models import Stock
+from stock_management.forms import NewStockForm
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -42,7 +42,7 @@ class UserStockList(generic.ListView):
 
     def post(self, request, *args, **kwargs):
         # Perform logic to add the new symbol
-        tickerForm = NewStockForm(request.post)
+        tickerForm = NewStockForm(request.POST)
         if tickerForm.is_valid():
             tickerForm.update()
             user = request.user
@@ -61,8 +61,6 @@ class UserStockList(generic.ListView):
 
             if not found:
                 user.profile.stocks.add(stock)
-
-        # Render an updated page. Right now just keep the status quo
 
         # TODO: Add a success or failure method
 
