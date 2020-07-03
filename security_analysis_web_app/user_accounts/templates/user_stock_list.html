@@ -16,6 +16,10 @@
   <form method="post">
     {% csrf_token %}
     {{ form }}
-    <button type="submit">Add</button>
-</form>
+    <button name="add_stocks" type="submit">Add</button>
+  </form>
+  <form method="post">
+    {% csrf_token %}
+    <button name="update_stocks" type="submit">Update</button>
+  </form>
 {% endblock %}
