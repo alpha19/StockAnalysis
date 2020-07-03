@@ -5,6 +5,7 @@ from django.views import generic
 
 from stock_management.models import Stock
 from stock_management.forms import NewStockForm
+from stock_management.views import StockController
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -40,8 +41,12 @@ class UserStockList(generic.ListView):
         context['form'] = NewStockForm()
         return context
 
-    def post(self, request, *args, **kwargs):
-        # Perform logic to add the new symbol
+    def update(self, request, *args, **kwargs):
+        user = request.user
+        for userStock in user.profile.stocks.all():
+            StockController(userStock.ticker_symbol).update()
+
+    def add(self, request, *args, **kwargs):
         tickerForm = NewStockForm(request.POST)
         if tickerForm.is_valid():
             tickerForm.update()
@@ -53,7 +58,7 @@ class UserStockList(generic.ListView):
             # 1. If stock not part of list of user stocks, then add
             # 2. If stock is part of user stocks, then update with latest data
             found = False
-            for userStock in user.profile.stocks:
+            for userStock in user.profile.stocks.all():
                 if userStock.ticker_symbol == stock.ticker_symbol:
                     userStock.refresh_from_db()
                     found = True
@@ -65,5 +70,13 @@ class UserStockList(generic.ListView):
         # TODO: Add a success or failure method
 
         # TODO: Add a remove button
+
+    def post(self, request, *args, **kwargs):
+        # Perform logic to add the new symbol
+        if "add_stocks" in request.POST:
+            self.add(request, *args, **kwargs)
+        elif "update_stocks" in request.POST:
+            self.update(request, *args, **kwargs)
+
 
         return self.get(request=request, *args, **kwargs)
