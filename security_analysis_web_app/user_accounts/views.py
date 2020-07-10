@@ -70,8 +70,6 @@ class UserStockList(generic.ListView):
                 stock.references += 1
                 stock.save()
 
-        # TODO: Add a success or failure method. Update: What does this mean???
-
     def remove(self, request, *args, **kwargs):
         ticker = request.POST.get('stock_name')
         user = request.user
@@ -94,6 +92,5 @@ class UserStockList(generic.ListView):
             self.update(request, *args, **kwargs)
         elif "remove_stock" in request.POST:
             self.remove(request, *args, **kwargs)
-
 
         return self.get(request=request, *args, **kwargs)

@@ -75,4 +75,4 @@ Once all these steps are complete your project should now point to the virtual e
 * finnhub-python
 # Deficiencies
 The overall stock database is local to the user and is tracked by the repository. The hope is to stop tracking the database - instead providing a template db in this repo - in the short term.
-Longer term goal include actually deploying a server to host the db, task initiation (analysis and updates), and web server backend.
+Longer term goal includes actually deploying a server to host the db, task initiation (analysis and updates), and web server backend.
