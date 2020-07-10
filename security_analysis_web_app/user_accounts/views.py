@@ -70,6 +70,7 @@ class UserStockList(generic.ListView):
                 stock.references += 1
                 stock.save()
 
+
     def remove(self, request, *args, **kwargs):
         ticker = request.POST.get('stock_name')
         user = request.user
