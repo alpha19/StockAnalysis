@@ -2,14 +2,30 @@
 
 {% block content %}
   <h1>Stock List</h1>
-  {% if user_stock_list %}
-  <ul>
+  <table>
+      <tr>
+          <th>Company</th>
+          <th>Price</th>
+          <th>Year High</th>
+          <th>Year Low</th>
+      </tr>
     {% for stock in user_stock_list %}
-      <li>
-        <a href="">{{ stock.company_name }}</a> (${{stock.price}})
-      </li>
+      <tr>
+          <!-- Ultimately clicking on company name will take you to the specific stock page -->
+          <td>{{ stock.company_name }}</a></td>
+          <td>${{ stock.price }}</td>
+          <td>${{ stock.year_high }}</td>
+          <td>${{ stock.year_low }}</td>
+          <td>
+              <form method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="stock_name" value="{{stock.ticker_symbol}}" />
+                  <button name="remove_stock" type="submit">Remove</button>
+              </form>
+          </td>
+      </tr>
     {% endfor %}
-  </ul>
+    </table>
   {% else %}
     <p>There are no tracked stocks.</p>
   {% endif %}

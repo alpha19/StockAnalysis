@@ -66,10 +66,24 @@ class UserStockList(generic.ListView):
 
             if not found:
                 user.profile.stocks.add(stock)
+                # Add a references
+                stock.references += 1
+                stock.save()
 
-        # TODO: Add a success or failure method
 
-        # TODO: Add a remove button
+    def remove(self, request, *args, **kwargs):
+        ticker = request.POST.get('stock_name')
+        user = request.user
+
+        stock = Stock.objects.get(pk=ticker)
+
+        user.profile.stocks.remove(stock)
+
+        stock.references -= 1
+        stock.save()
+
+        if stock.references == 0:
+            Stock.objects.filter(pk=ticker).delete()
 
     def post(self, request, *args, **kwargs):
         # Perform logic to add the new symbol
@@ -77,6 +91,7 @@ class UserStockList(generic.ListView):
             self.add(request, *args, **kwargs)
         elif "update_stocks" in request.POST:
             self.update(request, *args, **kwargs)
-
+        elif "remove_stock" in request.POST:
+            self.remove(request, *args, **kwargs)
 
         return self.get(request=request, *args, **kwargs)
