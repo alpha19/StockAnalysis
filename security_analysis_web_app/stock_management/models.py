@@ -15,5 +15,6 @@ class Stock(models.Model):
     last_updated_date = models.DateField(help_text="The date when the stock information was last updated", auto_now=True)
     date_added = models.DateField(help_text="The date the stock was added to the database", auto_now_add=True)
     streak = models.IntegerField(help_text="Represents a streak of positive or negative earnings.")
+    references = models.IntegerField(help_text="Represents number of user account references to the stock.", default=0)
     # TODO: Add a foreign key to the user_accounts database model
     # TODO: Add a field for current price when added

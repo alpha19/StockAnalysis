@@ -1,5 +1,17 @@
 .sidebar-nav {
     margin-top: 20px;
-    padding: 0;
+    padding: 5;
     list-style: none;
+}
+
+.column {
+  float: left;
+  width: 33.33%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
