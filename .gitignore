@@ -20,3 +20,6 @@ lib64
 venv
 sent_emails
 keys.py
+
+.env.prod
+.env.prod.db

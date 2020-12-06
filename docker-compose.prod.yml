@@ -2,10 +2,12 @@ version: '3.7'
 
 services:
     web:
-        build: ./security_analysis_web_app
+        build:
+            context: ./security_analysis_web_app
+            dockerfile: Dockerfile.prod
         command: gunicorn security_analysis_web_app.wsgi:application --bind 0.0.0.0:8000
-        ports:
-            - "8000:8000"
+        expose:
+            - 8000
         env_file:
             - ./security_analysis_web_app/.env.prod
         depends_on:
@@ -16,6 +18,12 @@ services:
         - postgres_data:/var/lib/postgresql/data/
       env_file:
         - ./security_analysis_web_app/.env.prod.db
+    nginx:
+        build: ./security_analysis_web_app/nginx
+        ports:
+            - 1337:80
+        depends_on:
+            - web
 
 volumes:
   postgres_data:
