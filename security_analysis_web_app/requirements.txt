@@ -1,6 +1,26 @@
-On branch add_dependency_list
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-	requirements.txt
-
-nothing added to commit but untracked files present (use "git add" to track)
+aiotkinter==0.2
+asn1crypto==0.24.0
+certifi==2019.3.9
+cffi==1.12.3
+chardet==3.0.4
+cryptography==2.6.1
+Django==2.2.1
+EasyTkinter==1.1.0
+finnhub-python==1.0.3
+idna==2.8
+lxml==4.5.1
+multitasking==0.0.9
+numpy==1.18.5
+pandas==1.0.4
+pipdeptree==1.0.0
+pycparser==2.19
+python-dateutil==2.8.1
+pytz==2019.1
+requests==2.21.0
+six==1.12.0
+sqlparse==0.3.0
+tkinter.help==2.0
+urllib3==1.24.2
+yfinance==0.1.54
+psycopg2-binary==2.8.5
+gunicorn==20.0.4
