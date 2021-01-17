@@ -24,9 +24,9 @@ COPY . .
 # RUN flake8 --ignore=E501,F401 .
 
 # install dependencies
-COPY ./requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /security_analysis_web_app/wheels -r requirements.txt
-
+COPY requirements.txt /security_analysis_web_app/
+#RUN pip wheel --no-cache-dir --no-deps --wheel-dir /security_analysis_web_app/wheels -r requirements.txt
+RUN pip wheel --no-deps --wheel-dir /security_analysis_web_app/wheels -r requirements.txt
 
 #########
 # FINAL #
@@ -45,13 +45,15 @@ RUN addgroup -S security_analysis_web_app && adduser -S security_analysis_web_ap
 ENV HOME=/security_analysis_web_app
 ENV APP_HOME=/security_analysis_web_app/web
 RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/static
 WORKDIR $APP_HOME
 
 # install dependencies
-RUN apk update && apk add libpq linux-headers g++
+RUN apk update && apk add libpq linux-headers g++ musl-dev openssl-dev libffi-dev libxslt-dev libxml2-dev
 COPY --from=builder /security_analysis_web_app/wheels /wheels
 COPY --from=builder /security_analysis_web_app/requirements.txt .
-RUN pip install --no-cache /wheels/*
+#RUN pip install --no-cache /wheels/*
+RUN pip install /wheels/*
 
 # copy entrypoint-prod.sh
 COPY ./entrypoint.prod.sh $APP_HOME
