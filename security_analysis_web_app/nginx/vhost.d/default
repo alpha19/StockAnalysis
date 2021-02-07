@@ -1,0 +1,4 @@
+location /staticfiles/ {
+  alias /security_analysis_web_app/web/static/;
+  add_header Access-Control-Allow-Origin *;
+}
