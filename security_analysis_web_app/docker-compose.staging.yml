@@ -3,7 +3,7 @@ version: '3.7'
 services:
     web:
         build:
-            context: ./security_analysis_web_app
+            context: ./
             dockerfile: Dockerfile.prod
         command: gunicorn security_analysis_web_app.wsgi:application --bind 0.0.0.0:8000
         volumes:
@@ -11,7 +11,7 @@ services:
         expose:
             - 8000
         env_file:
-            - ./security_analysis_web_app/.env.staging
+            - ./.env.staging
         depends_on:
             - db
     db:
@@ -19,10 +19,10 @@ services:
       volumes:
         - postgres_data:/var/lib/postgresql/data/
       env_file:
-        - ./security_analysis_web_app/.env.staging.db
+        - ./.env.staging.db
     nginx-proxy:
         container_name: nginx-proxy
-        build: ./security_analysis_web_app/nginx
+        build: ./nginx
         restart: always
         volumes:
            - static_volume:/security_analysis_web_app/web/static
@@ -38,14 +38,14 @@ services:
     nginx-proxy-letsencrypt:
         image: jrcs/letsencrypt-nginx-proxy-companion
         env_file:
-         - ./security_analysis_web_app/.env.staging.proxy-companion
+         - ./.env.staging.proxy-companion
         volumes:
          - /var/run/docker.sock:/var/run/docker.sock:ro
          - certs:/etc/nginx/certs
          - html:/usr/share/nginx/html
          - vhost:/etc/nginx/vhost.d
-    depends_on:
-      - nginx-proxy
+        depends_on:
+         - nginx-proxy
 
 
 volumes:
